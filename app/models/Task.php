@@ -9,7 +9,8 @@ enum TaskStatus: string {
 class Task {
     public function __construct(
         public string $taskName,
-        public TaskStatus $taskStatus = TaskStatus::PENDING,
+        public TaskStatus $taskStatus,
+        public string $user,
         public ?DateTime $startDate = null,
         public ?DateTime $endDate = null
     ) {
@@ -20,6 +21,7 @@ class Task {
         return [
             'name'      => $this->taskName,
             'status'    => $this->taskStatus->value,
+            'user'      => $this->user,
             'startDate' => $this->startDate->format('Y-m-d H:i:s'),
             'endDate'   => $this->endDate?->format('Y-m-d H:i:s'),
         ];

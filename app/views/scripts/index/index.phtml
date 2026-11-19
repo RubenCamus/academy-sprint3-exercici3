@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-<div class="flex">
-    <div class="bg-green-200 h-dvh w-[25%] flex flex-col items-center pt-5">
-        <h1 class="text-3xl font-bold">Lists</h1>
-        <button class="font-bold border-solid opacity-60 bg-blue-400 text-white h-8  w-full hover:bg-orange-700 hover:shadow">Create List</button>
-        <!-- Insertar Array de Listas-->
-    </div>
-    <div class="bg-blue-200 w-full  ">
-        <div class="h-[30%] bg-orange-200 flex justify-center pt-5">
-            <h1 class="text-3xl font-bold">To Do APP</h1>
-        </div>
-        <div class="bg-teal-200 flex justify-center pb-5 pt-5 ">
-            <h1 class="text-3xl font-bold">Tasks</h1>
-        </div>
-        <div class="w-full h-full bg-pink-200 pt-5">
-=======
 <?php
 $tasks = $this->tasks ?? [];
 $columns = ['pending' => 'Pending', 'doing' => 'Doing', 'done' => 'Done'];
@@ -40,8 +24,6 @@ $columns = ['pending' => 'Pending', 'doing' => 'Doing', 'done' => 'Done'];
     <div class="bg-blue-200 w-full">
         <div class="bg-orange-200 flex flex-col items-center py-5">
             <h1 class="text-3xl font-bold">To Do APP</h1>
-            <form action="/createUser" method="post">
-                            </form>
         </div>
         <div class="bg-teal-200 flex justify-center py-5">
             <h1 class="text-3xl font-bold">Tasks</h1>
@@ -52,15 +34,17 @@ $columns = ['pending' => 'Pending', 'doing' => 'Doing', 'done' => 'Done'];
                     <h2 class="text-xl font-bold mb-2"><?= $title ?></h2>
                     <?php foreach ($tasks as $task): ?>
                         <?php if ($task['status'] === $status): ?>
-                            <div class="bg-white rounded p-3 mb-2 break-words">
-                                <?= ucfirst(htmlspecialchars($task['name'])) ?>
-                                <?= ucfirst(htmlspecialchars($task['user'])) ?>
+                            <div class="bg-white rounded p-3 mb-2 break-words flex flex-col">
+                                <h1 class="font-bold self-center"><?= ucfirst(htmlspecialchars($task['name'])) ?></h1>
+                                <p><?= ucfirst(htmlspecialchars($task['user'])) ?></p>
+                                <p>Start Date: <?= $task['startDate'] ?></p>
+                                <p>End Date: <?= $task['endDate'] ?? "Not defined" ?></p>
+
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
->>>>>>> 4c1aa3daf66795dd3ce3a0c60500cb2ed493dbd9
             <!-- Coger Lista seleccionada y cargar sus tareas-->
         </div>
     </div>
