@@ -35,6 +35,7 @@ $columns = ['pending' => 'Pending', 'doing' => 'Doing', 'done' => 'Done'];
                     <?php foreach ($tasks as $task): ?>
                         <?php if ($task['status'] === $status): ?>
                         <form action="<?= $this->baseUrl() ?>/updateTask" method="POST" class="bg-white rounded p-3 mb-2 flex flex-col gap-1">
+                            <button formaction="<?= $this->baseUrl() ?>/deleteTask">Delete Task</button>
                             <input type="hidden" name="original-name" value="<?= htmlspecialchars($task['name']) ?>">
                             <input class="font-bold text-center border" name="task-name" type="text" maxlength="80" required
                                    value="<?= htmlspecialchars($task['name']) ?>">

@@ -47,7 +47,17 @@ class JSONModel implements IPersistance {
         }
         return null;
     }
-
+    public function deleteTask(string $name): bool {
+        $tasks = $this->read();
+        foreach ($tasks as $i => $task) {
+            if ($tasks['name'] === $name) {
+                array_splice($tasks, $i, 1);
+                $this->write($tasks);
+                return true;
+            }
+        }
+        return false;
+    }
     // $changes = ['campo' => 'nuevo valor']. Devuelve false si no existe la tarea
     public function update(string $name, array $changes): bool {
         $tasks = $this->read();

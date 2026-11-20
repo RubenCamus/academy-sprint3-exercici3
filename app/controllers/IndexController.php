@@ -29,7 +29,6 @@ class IndexController extends Controller {
         }
 
         header('Location: ' . $this->_baseUrl() . '/');
-        exit;
     }
 
     public function updateTaskAction() {
@@ -62,9 +61,21 @@ class IndexController extends Controller {
         }
 
         header('Location: ' . $this->_baseUrl() . '/');
-        exit;
     }
-
+    public function deleteTaskAction() {
+        $name = $this->_getParam('task-name');
+        try {
+            if (!$this->isFieldValid($name)) {
+                throw new Exception('Task name not valid');
+            }
+            if($this->model->delete()) {
+                echo 'Tarea eliminada';
+            };
+        } catch( Exception $err) {
+            echo $err->getMessage();
+        }
+        header('Location: ' . $this->_baseUrl() . '/');
+    }
     // Valida que sea string, no vacío y con menos de $limit caracteres
     private function isFieldValid($text): bool {
         // is_string() ya descarta null, números, arrays...
