@@ -32,6 +32,39 @@ class IndexController extends Controller {
         exit;
     }
 
+    public function updateTaskAction() {
+        $original = $this->_getParam('original-name');
+        $name     = $this->_getParam('task-name');
+        $user     = $this->_getParam('user-name');
+        $status   = $this->_getParam('task-status');
+
+        try {
+            if (!$this->isFieldValid($original)) {
+                throw new Exception('Task not found');
+            }
+            if (!$this->isFieldValid($name)) {
+                throw new Exception('Not a valid task name');
+            }
+            if (!$this->isFieldValid($user)) {
+                throw new Exception('Not a valid user');
+            }
+
+            $updated = $this->model->update($original, [
+                'name'   => trim($name),
+                'user'   => trim($user),
+                'status' => $status,
+            ]);
+            if (!$updated) {
+                throw new Exception('Task not found');
+            }
+        } catch (Exception $err) {
+            $_SESSION['error'] = $err->getMessage();
+        }
+
+        header('Location: ' . $this->_baseUrl() . '/');
+        exit;
+    }
+
     // Valida que sea string, no vacío y con menos de $limit caracteres
     private function isFieldValid($text): bool {
         // is_string() ya descarta null, números, arrays...
