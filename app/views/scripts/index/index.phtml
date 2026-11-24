@@ -1,0 +1,60 @@
+<?php
+$tasks = $this->tasks ?? [];
+$columns = ['pending' => 'Pending', 'doing' => 'Doing', 'done' => 'Done'];
+?>
+<div class="flex min-h-dvh">
+    <div class="bg-green-200 w-[25%] flex flex-col items-center pt-5">
+        <h1 class="text-3xl font-bold">Create Task</h1>
+        <form action="<?= $this->baseUrl() ?>/createTask" method="POST" class="flex flex-col gap-2 mt-4 w-[90%]">
+            <label class="bg-indigo-200 px-2" for="task-name">Task Name</label>
+            <input class="bg-sky-200 px-2 py-1 shadow" id="task-name" name="task-name" type="text" required>
+            <label class="bg-indigo-200 px-2" for="task-status">Task Status</label>
+            <select class="bg-indigo-200 px-2 py-1" name="task-status" id="task-status">
+                <option selected value="pending">Pending</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+            </select>
+            <label for="user">Introduce your user</label>
+            <input class="bg-teal-200 px-2 py-1 shadow" id="user-name" name="user-name" type="text">
+            <p>Maximum 20 characters</p>
+            <button type="submit" class="font-bold bg-blue-400 text-white mt-1.5 rounded-2xl h-8 hover:bg-orange-700 hover:shadow">Create Task</button>
+        </form>
+        <!-- Insertar Array de Listas-->
+    </div>
+    <div class="bg-blue-200  w-full flex flex-col">
+        <div class="bg-orange-200 flex flex-col items-center py-5">
+            <h1 class="text-3xl font-bold">To Do APP</h1>
+        </div>
+        <div class="bg-teal-200 flex justify-center py-5">
+            <h1 class="text-3xl font-bold">Tasks</h1>
+        </div>
+        <div class="flex-1 grid grid-cols-3 gap-4 w-full bg-pink-200 p-5">
+            <?php foreach ($columns as $status => $title): ?>
+                <div class="min-w-0">
+                    <h2 class="text-xl font-bold mb-2"><?= $title ?></h2>
+                    <?php foreach ($tasks as $task): ?>
+                        <?php if ($task['status'] === $status): ?>
+                        <form action="<?= $this->baseUrl() ?>/updateTask" method="POST" class="bg-white rounded p-3 mb-2 flex flex-col gap-1">
+                            <button formaction="<?= $this->baseUrl() ?>/deleteTask">Delete Task</button>
+                            <input type="hidden" name="original-name" value="<?= htmlspecialchars($task['name']) ?>">
+                            <input class="font-bold text-center border" name="task-name" type="text" maxlength="80" required
+                                   value="<?= htmlspecialchars($task['name']) ?>">
+                            <input class="border px-1" name="user-name" type="text" maxlength="19" required
+                                   value="<?= htmlspecialchars($task['user'] ?? '') ?>">
+                            <select class="border" name="task-status">
+                                <?php foreach ($columns as $value => $label): ?>
+                                    <option value="<?= $value ?>" <?= $task['status'] === $value ? 'selected' : '' ?>><?= $label ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <p>Start Date: <?= $task['startDate'] ?></p>
+                            <p>End Date: <?= $task['endDate'] ?? 'Not defined' ?></p>
+                            <button type="submit" class="bg-blue-400 text-white rounded h-7 hover:bg-orange-700">Save</button>
+                        </form>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+            <!-- Coger Lista seleccionada y cargar sus tareas-->
+        </div>
+    </div>
+</div>

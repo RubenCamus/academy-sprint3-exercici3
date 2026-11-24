@@ -16,15 +16,15 @@ class Router
 			// the controller and action to execute
 			$controller = null;
 			$action = null;
-			
+
 			// tries to find a simple route
 			$routeFound = $this->_getSimpleRoute($routes, $controller, $action);
-			
+
 			if (!$routeFound) {
 				// tries to find the a matching "parameter route"
 				$routeFound = $this->_getParameterRoute($routes, $controller, $action);
 			}
-			
+
 			// no route found, throw an exception to run the error controller
 			if (!$routeFound || $controller == null || $action == null) {
 				throw new Exception('no route added for ' . $_SERVER['REQUEST_URI']);
@@ -41,7 +41,7 @@ class Router
 			$controller->execute('error');
 		}
 	}
-	
+
 	/**
 	 * Tests if a route has parameters
 	 * @param string $route the route (uri) to test
@@ -51,7 +51,7 @@ class Router
 	{
 		return preg_match('/(\/:[a-z]+)/', $route);
 	}
-	
+
 	/**
 	 * Fetches the current URI called
 	 * @return string the URI called
@@ -61,10 +61,10 @@ class Router
 		$uri = explode('?',$_SERVER['REQUEST_URI']);
 		$uri = $uri[0];
 		$uri = substr($uri, strlen(WEB_ROOT));
-		
+
 		return $uri;
 	}
-	
+
 	/**
 	 * Tries to find a matching simple route
 	 * @param array $routes the list of routes in the system
@@ -76,7 +76,7 @@ class Router
 	{
 		// fetches the URI
 		$uri = $this->_getUri();
-		
+
 		// if the route isn't defined, try to add a trailing slash
 		if (isset($routes[$uri])) {
 			$routeFound = $routes[$uri];
@@ -89,20 +89,20 @@ class Router
 			// fetches the current route
 			$routeFound = isset($routes[$uri]) ? $routes[$uri] : false;
 		}
-		
+
 		// if a matching route was found
 		if ($routeFound) {
 			list($name, $action) = explode('#', $routeFound);
-		
+
 			// initializes the controller
 			$controller = $this->_initializeController($name);
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Tries to find a matching parameter route
 	 * @param array $routes the list of routes in the system
@@ -114,37 +114,37 @@ class Router
 	{
 		// fetches the URI
 		$uri = $this->_getUri();
-		
+
 		// testing routes with parameters
 		foreach ($routes as $route => $path) {
 			if ($this->hasParameters($route)) {
 				$uriParts = explode('/:', $route);
-					
+
 				$pattern = '/^';
-				//$pattern .= '\\'.($uriParts[0] == '' ? '/' : $uriParts[0]); 
+				//$pattern .= '\\'.($uriParts[0] == '' ? '/' : $uriParts[0]);
 				if ($uriParts[0] == '') {
 					$pattern .= '\\/';
 				}
 				else {
 					$pattern .= str_replace('/', '\\/', $uriParts[0]);
 				}
-					
+
 				foreach (range(1, count($uriParts)-1) as $index) {
 					$pattern .= '\/([a-zA-Z0-9]+)';
 				}
-				
+
 				// now also handles ending slashes!
 				$pattern .= '[\/]{0,1}$/';
-					
+
 				$namedParameters = array();
 				$match = preg_match($pattern, $uri, $namedParameters);
 				// if the route matches
 				if ($match) {
 					list($name, $action) = explode('#', $path);
-		
+
 					// initializes the controller
 					$controller = $this->_initializeController($name);
-		
+
 					// adds the named parameters to the controller
 					foreach (range(1, count($namedParameters)-1) as $index) {
 						$controller->addNamedParameter(
@@ -152,15 +152,15 @@ class Router
 								$namedParameters[$index]
 						);
 					}
-					
+
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Initializes the given controller
 	 * @param string $name the name of the controller

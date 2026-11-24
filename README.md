@@ -1,4 +1,9 @@
 # PHP initial Project
+
+## Running The Project
+
+run ```php -S localhost:8000 -t .\web\``` in the root of the project.
+
 Main structure of php project. Folders / files:
 - **app**
   - **controllers**
